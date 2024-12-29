@@ -1,0 +1,69 @@
+version: '2'
+checks:
+  argument-count:
+    enabled: false
+  complex-logic:
+    enabled: true
+    config:
+      threshold: 5
+  file-lines:
+    enabled: true
+    config:
+      threshold: 250
+  method-complexity:
+    enabled: true
+    config:
+      threshold: 5
+  method-count:
+    enabled: true
+    config:
+      threshold: 20
+  method-lines:
+    enabled: true
+    config:
+      threshold: 50
+  nested-control-flow:
+    enabled: true
+    config:
+      threshold: 4
+  return-statements:
+    enabled: true
+    config:
+      threshold: 5
+  similar-code:
+    enabled: true
+    config:
+      threshold: 100 #language-specific defaults (45). overrides affect all languages.
+  identical-code:
+    enabled: true
+    config:
+      threshold: 100 #language-specific defaults (45). overrides affect all languages.
+plugins:
+  eslint:
+    enabled: true
+    config:
+      config: '.eslintrc.json'
+      extension:
+        - .js
+        - .jsx
+        - .ts
+        - .tsx
+  editorconfig:
+    enabled: true
+    channel: beta
+    config:
+      editorconfig: .editorconfig
+
+exclude_patterns:
+  - 'config/'
+  - 'db/'
+  - 'dist/'
+  - '**/*.d.ts'
+  - '**/node_modules/'
+  - '**/*.test.tsx'
+  - '**/*.test.ts'
+  - '**/mock/*'
+  - './*.config.js'
+  - './*.setup.js'
+  - './*.config.ts'
+  - './*.setup.ts'

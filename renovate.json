@@ -1,0 +1,9 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "group:all", ":semanticCommits", ":semanticCommitScope(package)"],
+  "updatePinnedDependencies": false,
+  "stabilityDays": 2,
+  "separateMajorMinor": true,
+  "timezone": "Asia/Bangkok",
+  "schedule": ["before 11am on Monday"]
+}
