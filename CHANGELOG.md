@@ -1,3 +1,10 @@
+# 1.0.0 (2024-12-29)
+
+
+### Features
+
+* [skip-ci] add shadcn ui ([86cb4a2](https://github.com/Kadphol/dummy-card-game/commit/86cb4a29d07e9ff9dbab739597230abc5f49f90e))
+
 # [1.1.0](https://github.com/Kadphol/next-seed-template/compare/v1.0.0...v1.1.0) (2024-12-11)
 
 
