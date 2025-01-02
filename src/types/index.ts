@@ -1,13 +1,10 @@
-export interface Card {
-  suit: string
-  value: string
-}
+import { CardType } from './card'
 
 export interface Player {
   name: string
-  hand: Card[]
+  hand: CardType[]
 }
 
 export interface Deck {
-  cards: Card[]
+  cards: CardType[]
 }

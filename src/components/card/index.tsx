@@ -1,12 +1,6 @@
-import { Card as CardType } from '@/libs/deck'
 import { cn } from '@/libs/utils'
-
-const SUIT_SYMBOLS = {
-  hearts: '♥',
-  diamonds: '♦',
-  clubs: '♣',
-  spades: '♠',
-}
+import { CardType } from '@/types/card'
+import { SUIT, SUIT_SYMBOLS } from '@constants/card'
 
 interface CardProps {
   card: CardType
@@ -16,8 +10,8 @@ interface CardProps {
 const Card = ({ card, onClick }: CardProps) => {
   const { suit, rank } = card
   const { color, bgColor } =
-    suit === 'hearts' || suit === 'diamonds'
-      ? { color: 'text-red-500', bgColor: 'bg-red-50' }
+    suit === SUIT.HEARTS || suit === SUIT.DIAMONDS
+      ? { color: 'text-red-500', bgColor: 'bg-white' }
       : { color: 'text-black', bgColor: 'bg-white' }
 
   return (

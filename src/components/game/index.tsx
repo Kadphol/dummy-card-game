@@ -2,7 +2,8 @@
 
 import Deck from '@/components/deck'
 import Player from '@/components/player'
-import { Card as CardType, createDeck, isValidPlay, shuffleDeck } from '@/libs/deck'
+import { calculateCardPoints, createDeck, isValidPlay, shuffleDeck } from '@/libs/deck'
+import { CardType } from '@/types/card'
 import { useEffect, useState } from 'react'
 
 const Game = () => {
@@ -12,6 +13,9 @@ const Game = () => {
   const [currentPlayer, setCurrentPlayer] = useState(0)
   const [discardPile, setDiscardPile] = useState<CardType[]>([])
   const [selectedCards, setSelectedCards] = useState<CardType[]>([])
+  const [scores, setScores] = useState<number[]>(Array(4).fill(0))
+  const [headCard, setHeadCard] = useState<CardType | null>(null)
+  const [headCardPlayer, setHeadCardPlayer] = useState<number | null>(null)
 
   useEffect(() => {
     startNewGame()
@@ -22,12 +26,16 @@ const Game = () => {
     const newPlayers: CardType[][] = Array(4)
       .fill([])
       .map(() => newDeck.splice(0, 7))
+    const newHeadCard = newDeck.pop()!
     setDeck(newDeck)
     setPlayers(newPlayers)
     setPlayedCards(Array(4).fill([]))
     setCurrentPlayer(0)
-    setDiscardPile([newDeck.pop()!])
+    setDiscardPile([newHeadCard])
     setSelectedCards([])
+    setScores(Array(4).fill(0))
+    setHeadCard(newHeadCard)
+    setHeadCardPlayer(null)
   }
 
   const drawCard = () => {
@@ -47,6 +55,19 @@ const Game = () => {
     newPlayedCards[currentPlayer] = [...newPlayedCards[currentPlayer], selectedCards]
     setPlayers(newPlayers)
     setPlayedCards(newPlayedCards)
+
+    // Calculate and add points
+    const newScores = [...scores]
+    const pointsEarned = selectedCards.reduce((sum, card) => sum + calculateCardPoints(card), 0)
+
+    // Add bonus for first discard pile card
+    if (headCard && selectedCards.includes(headCard) && headCardPlayer === null) {
+      setHeadCardPlayer(currentPlayer)
+    }
+
+    newScores[currentPlayer] += pointsEarned
+    setScores(newScores)
+
     setSelectedCards([])
     checkWinCondition()
   }
@@ -61,7 +82,10 @@ const Game = () => {
 
   const checkWinCondition = () => {
     if (players[currentPlayer].length === 0) {
-      alert(`Player ${currentPlayer + 1} wins!`)
+      if (headCardPlayer !== null) {
+        scores[headCardPlayer] += 50
+      }
+      alert(`Player ${currentPlayer + 1} wins with ${scores[currentPlayer]} points!`)
       startNewGame()
     }
   }
@@ -83,6 +107,7 @@ const Game = () => {
             hand={players[(currentPlayer + 3) % 4]}
             playedCards={playedCards[(currentPlayer + 3) % 4]}
             isCurrentPlayer={false}
+            score={scores[(currentPlayer + 3) % 4]}
           />
         </div>
         <div className="mb-4 flex justify-between">
@@ -90,12 +115,14 @@ const Game = () => {
             hand={players[(currentPlayer + 2) % 4]}
             playedCards={playedCards[(currentPlayer + 2) % 4]}
             isCurrentPlayer={false}
+            score={scores[(currentPlayer + 2) % 4]}
           />
-          <Deck drawPile={deck} discardPile={discardPile} onDrawCard={drawCard} />
+          <Deck drawPile={deck} discardPile={discardPile} onDrawCard={drawCard} headCard={headCard} />
           <Player
             hand={players[(currentPlayer + 1) % 4]}
             playedCards={playedCards[(currentPlayer + 1) % 4]}
             isCurrentPlayer={false}
+            score={scores[(currentPlayer + 1) % 4]}
           />
         </div>
         <div className="mb-4 flex justify-center">
@@ -104,6 +131,7 @@ const Game = () => {
             playedCards={playedCards[currentPlayer]}
             onCardClick={handleCardClick}
             isCurrentPlayer={true}
+            score={scores[currentPlayer]}
           />
         </div>
       </div>

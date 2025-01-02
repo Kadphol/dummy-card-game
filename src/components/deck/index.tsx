@@ -1,13 +1,14 @@
-import { Card as CardType } from '@/libs/deck'
+import { CardType } from '@/types/card'
 import Card from '@components/card'
 
 interface DeckProps {
   drawPile: CardType[]
   discardPile: CardType[]
   onDrawCard: () => void
+  headCard: CardType | null
 }
 
-const Deck = ({ drawPile, discardPile, onDrawCard }: DeckProps) => {
+const Deck = ({ drawPile, discardPile, onDrawCard, headCard }: DeckProps) => {
   return (
     <div className="flex flex-col items-center space-y-4">
       <div>
@@ -23,7 +24,12 @@ const Deck = ({ drawPile, discardPile, onDrawCard }: DeckProps) => {
         <h2 className="mb-2 text-lg font-bold">Discard Pile</h2>
         <div className="flex max-w-md flex-wrap justify-center gap-2">
           {discardPile.slice(-5).map((card, index) => (
-            <Card key={index} card={card} />
+            <div key={index} className="relative">
+              <Card card={card} />
+              {card === headCard && (
+                <div className="pointer-events-none absolute inset-0 rounded-lg border-4 border-yellow-400" />
+              )}
+            </div>
           ))}
         </div>
       </div>

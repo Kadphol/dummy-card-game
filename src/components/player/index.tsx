@@ -1,17 +1,19 @@
 import Card from '@/components/card'
-import { Card as CardType } from '@/libs/deck'
+import { CardType } from '@/types/card'
 
 interface PlayerProps {
   hand: CardType[]
   playedCards: CardType[][]
+  score: number
   onCardClick?: (card: CardType) => void
   isCurrentPlayer?: boolean
 }
 
-const Player = ({ hand, playedCards, onCardClick, isCurrentPlayer = false }: PlayerProps) => {
+const Player = ({ hand, playedCards, score, onCardClick, isCurrentPlayer = false }: PlayerProps) => {
   return (
     <div className="mb-4">
       <h2 className="mb-2 text-lg font-bold">Player Hand</h2>
+      <p className="text-md mb-2 font-semibold">Score: {score}</p>
       <div className="mb-4 flex space-x-2">
         {isCurrentPlayer
           ? hand.map((card, index) => <Card key={index} card={card} onClick={() => onCardClick && onCardClick(card)} />)

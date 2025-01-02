@@ -1,15 +1,10 @@
-export type Suit = 'hearts' | 'diamonds' | 'clubs' | 'spades'
-export type Rank = '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K' | 'A'
+import { CardType, RankType, SuitType } from '@/types/card'
+import { RANK, SUIT } from '@constants/card'
 
-export interface Card {
-  suit: Suit
-  rank: Rank
-}
-
-export function createDeck(): Card[] {
-  const suits: Suit[] = ['hearts', 'diamonds', 'clubs', 'spades']
-  const ranks: Rank[] = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-  const deck: Card[] = []
+export function createDeck(): CardType[] {
+  const suits: SuitType[] = ['hearts', 'diamonds', 'clubs', 'spades']
+  const ranks: RankType[] = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+  const deck: CardType[] = []
 
   for (const suit of suits) {
     for (const rank of ranks) {
@@ -20,7 +15,7 @@ export function createDeck(): Card[] {
   return deck
 }
 
-export function shuffleDeck(deck: Card[]): Card[] {
+export function shuffleDeck(deck: CardType[]): CardType[] {
   const shuffled = [...deck]
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -29,7 +24,7 @@ export function shuffleDeck(deck: Card[]): Card[] {
   return shuffled
 }
 
-export function isValidPlay(cards: Card[]): boolean {
+export function isValidPlay(cards: CardType[]): boolean {
   if (cards.length < 3) return false
 
   // Check for set (same rank)
@@ -48,4 +43,15 @@ export function isValidPlay(cards: Card[]): boolean {
   }
 
   return false
+}
+
+export function isSpecialCard(card: CardType): boolean {
+  return (card.rank === RANK.TWO && card.suit === SUIT.CLUBS) || (card.rank === RANK.QUEEN && card.suit === SUIT.SPADES)
+}
+
+export function calculateCardPoints(card: CardType): number {
+  if (isSpecialCard(card)) return 50
+  if (card.rank === 'A') return 15
+  if (['10', 'J', 'Q', 'K'].includes(card.rank)) return 10
+  return 5
 }
