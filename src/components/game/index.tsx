@@ -75,21 +75,47 @@ const Game = () => {
   }
 
   return (
-    <div className="p-4">
+    <div className="flex h-screen flex-col p-4">
       <h1 className="mb-4 text-2xl font-bold">Thai Dummy</h1>
-      <Deck drawPile={deck} discardPile={discardPile} onDrawCard={drawCard} />
-      <div className="mb-4">
-        <button className="mr-2 rounded bg-blue-500 px-4 py-2 text-white" onClick={playCards}>
+      <div className="flex flex-grow flex-col justify-between">
+        <div className="mb-4 flex justify-center">
+          <Player
+            hand={players[(currentPlayer + 3) % 4]}
+            playedCards={playedCards[(currentPlayer + 3) % 4]}
+            isCurrentPlayer={false}
+          />
+        </div>
+        <div className="mb-4 flex justify-between">
+          <Player
+            hand={players[(currentPlayer + 2) % 4]}
+            playedCards={playedCards[(currentPlayer + 2) % 4]}
+            isCurrentPlayer={false}
+          />
+          <Deck drawPile={deck} discardPile={discardPile} onDrawCard={drawCard} />
+          <Player
+            hand={players[(currentPlayer + 1) % 4]}
+            playedCards={playedCards[(currentPlayer + 1) % 4]}
+            isCurrentPlayer={false}
+          />
+        </div>
+        <div className="mb-4 flex justify-center">
+          <Player
+            hand={players[currentPlayer]}
+            playedCards={playedCards[currentPlayer]}
+            onCardClick={handleCardClick}
+            isCurrentPlayer={true}
+          />
+        </div>
+      </div>
+      <div className="mb-4 flex justify-center space-x-4">
+        <button className="rounded bg-blue-500 px-4 py-2 text-white" onClick={playCards}>
           Play Selected Cards
         </button>
         <button className="rounded bg-red-500 px-4 py-2 text-white" onClick={() => discardCard(selectedCards[0])}>
           Discard Selected Card
         </button>
       </div>
-      {players.map((player, index) => (
-        <Player key={index} hand={player} playedCards={playedCards[index]} onCardClick={handleCardClick} />
-      ))}
-      <div className="mt-4">
+      <div className="text-center">
         <h2 className="text-lg font-bold">Current Player: {currentPlayer + 1}</h2>
       </div>
     </div>

@@ -4,17 +4,24 @@ import { Card as CardType } from '@/libs/deck'
 interface PlayerProps {
   hand: CardType[]
   playedCards: CardType[][]
-  onCardClick: (card: CardType) => void
+  onCardClick?: (card: CardType) => void
+  isCurrentPlayer?: boolean
 }
 
-const Player = ({ hand, playedCards, onCardClick }: PlayerProps) => {
+const Player = ({ hand, playedCards, onCardClick, isCurrentPlayer = false }: PlayerProps) => {
   return (
     <div className="mb-4">
       <h2 className="mb-2 text-lg font-bold">Player Hand</h2>
       <div className="mb-4 flex space-x-2">
-        {hand.map((card, index) => (
-          <Card key={index} card={card} onClick={() => onCardClick(card)} />
-        ))}
+        {isCurrentPlayer
+          ? hand.map((card, index) => <Card key={index} card={card} onClick={() => onCardClick && onCardClick(card)} />)
+          : hand.map((_, index) => (
+              <div
+                key={index}
+                className="h-24 w-16 rounded-lg border border-gray-300 bg-blue-500"
+                aria-label="Hidden card"
+              />
+            ))}
       </div>
       <h2 className="mb-2 text-lg font-bold">Played Cards</h2>
       <div className="flex flex-wrap gap-4">

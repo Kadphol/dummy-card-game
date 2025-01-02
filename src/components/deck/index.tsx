@@ -9,7 +9,7 @@ interface DeckProps {
 
 const Deck = ({ drawPile, discardPile, onDrawCard }: DeckProps) => {
   return (
-    <div className="mb-4 flex space-x-4">
+    <div className="flex flex-col items-center space-y-4">
       <div>
         <h2 className="mb-2 text-lg font-bold">Draw Pile</h2>
         <div
@@ -21,8 +21,8 @@ const Deck = ({ drawPile, discardPile, onDrawCard }: DeckProps) => {
       </div>
       <div>
         <h2 className="mb-2 text-lg font-bold">Discard Pile</h2>
-        <div className="flex max-w-md flex-wrap gap-2">
-          {discardPile.map((card, index) => (
+        <div className="flex max-w-md flex-wrap justify-center gap-2">
+          {discardPile.slice(-5).map((card, index) => (
             <Card key={index} card={card} />
           ))}
         </div>
