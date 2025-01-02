@@ -18,10 +18,12 @@ const config: Config = {
   collectCoverageFrom: ['<rootDir>/src/**/*.(ts|tsx)'],
   coverageProvider: 'v8',
   coveragePathIgnorePatterns: ['/node_modules/'],
+  testMatch: ['<rootDir>/__tests__/**/*.(spec|test).(ts|tsx)'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '@mock/(.*)$': '<rootDir>/__mock__/$1',
     '@tests/(.*)$': '<rootDir>/__tests__/$1',
+    '@test/utils': '<rootDir>/__tests__/test-utils.tsx',
   },
   moduleDirectories: ['node_modules', '<rootDir>/'],
   testEnvironment: 'jsdom',
