@@ -132,6 +132,7 @@ const Game = () => {
             onCardClick={handleCardClick}
             isCurrentPlayer={true}
             score={scores[currentPlayer]}
+            selectedCards={selectedCards}
           />
         </div>
       </div>

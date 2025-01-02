@@ -5,9 +5,10 @@ import { SUIT, SUIT_SYMBOLS } from '@constants/card'
 interface CardProps {
   card: CardType
   onClick?: () => void
+  isSelected?: boolean
 }
 
-const Card = ({ card, onClick }: CardProps) => {
+const Card = ({ card, onClick, isSelected = false }: CardProps) => {
   const { suit, rank } = card
   const { color, bgColor } =
     suit === SUIT.HEARTS || suit === SUIT.DIAMONDS
@@ -19,7 +20,10 @@ const Card = ({ card, onClick }: CardProps) => {
       className={cn(
         'flex h-24 w-16 cursor-pointer flex-col items-center justify-center rounded-lg border border-gray-300 bg-white p-2',
         color,
-        bgColor
+        bgColor,
+        {
+          'border border-yellow-400': isSelected,
+        }
       )}
       onClick={onClick}
     >

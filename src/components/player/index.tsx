@@ -7,9 +7,17 @@ interface PlayerProps {
   score: number
   onCardClick?: (card: CardType) => void
   isCurrentPlayer?: boolean
+  selectedCards?: CardType[]
 }
 
-const Player = ({ hand, playedCards, score, onCardClick, isCurrentPlayer = false }: PlayerProps) => {
+const Player = ({
+  hand,
+  playedCards,
+  score,
+  onCardClick,
+  isCurrentPlayer = false,
+  selectedCards = [],
+}: PlayerProps) => {
   return (
     <div className="mb-4">
       <h2 className="mb-2 text-lg font-bold">Player Hand</h2>
@@ -30,7 +38,7 @@ const Player = ({ hand, playedCards, score, onCardClick, isCurrentPlayer = false
         {playedCards.map((group, groupIndex) => (
           <div key={groupIndex} className="flex space-x-2 rounded border border-gray-300 p-2">
             {group.map((card, cardIndex) => (
-              <Card key={cardIndex} card={card} />
+              <Card key={cardIndex} card={card} isSelected={selectedCards.includes(card)} />
             ))}
           </div>
         ))}
