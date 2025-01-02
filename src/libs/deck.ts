@@ -1,9 +1,9 @@
 import { CardType, RankType, SuitType } from '@/types/card'
-import { RANK, SUIT } from '@constants/card'
+import { RANK, RANKS, SUIT, SUITS } from '@constants/card'
 
 export function createDeck(): CardType[] {
-  const suits: SuitType[] = ['hearts', 'diamonds', 'clubs', 'spades']
-  const ranks: RankType[] = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+  const suits: SuitType[] = SUITS
+  const ranks: RankType[] = RANKS
   const deck: CardType[] = []
 
   for (const suit of suits) {
@@ -34,8 +34,9 @@ export function isValidPlay(cards: CardType[]): boolean {
   if (cards.every((card) => card.suit === cards[0].suit)) {
     const rankOrder = '23456789TJQKA'
     const sortedCards = cards.sort((a, b) => rankOrder.indexOf(a.rank) - rankOrder.indexOf(b.rank))
+    const firstIndex = rankOrder.indexOf(sortedCards[0].rank)
     for (let i = 1; i < sortedCards.length; i++) {
-      if (rankOrder.indexOf(sortedCards[i].rank) - rankOrder.indexOf(sortedCards[i - 1].rank) !== 1) {
+      if (rankOrder.indexOf(sortedCards[i].rank) - firstIndex - i !== 0) {
         return false
       }
     }
@@ -51,7 +52,7 @@ export function isSpecialCard(card: CardType): boolean {
 
 export function calculateCardPoints(card: CardType): number {
   if (isSpecialCard(card)) return 50
-  if (card.rank === 'A') return 15
-  if (['10', 'J', 'Q', 'K'].includes(card.rank)) return 10
+  if (card.rank === RANK.ACE) return 15
+  if ([RANK.TEN, RANK.JACK, RANK.QUEEN, RANK.KING].includes(card.rank)) return 10
   return 5
 }
