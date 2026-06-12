@@ -1,13 +1,13 @@
-import { RankType, SuitType } from '@/types/card'
+import type { RankType, SuitType } from '@/types/card'
 
-export const SUIT: Record<string, SuitType> = {
+export const SUIT = {
   HEARTS: 'hearts',
   DIAMONDS: 'diamonds',
   CLUBS: 'clubs',
   SPADES: 'spades',
-}
+} as const satisfies Record<string, SuitType>
 
-export const RANK: Record<string, RankType> = {
+export const RANK = {
   TWO: '2',
   THREE: '3',
   FOUR: '4',
@@ -21,7 +21,7 @@ export const RANK: Record<string, RankType> = {
   QUEEN: 'Q',
   KING: 'K',
   ACE: 'A',
-}
+} as const satisfies Record<string, RankType>
 
 export const SUITS: SuitType[] = [SUIT.HEARTS, SUIT.DIAMONDS, SUIT.CLUBS, SUIT.SPADES]
 export const RANKS: RankType[] = [
@@ -46,3 +46,11 @@ export const SUIT_SYMBOLS = {
   [SUIT.CLUBS]: '♣',
   [SUIT.SPADES]: '♠',
 }
+
+export const RANK_INDEX: Record<RankType, number> = Object.fromEntries(
+  RANKS.map((rank, index) => [rank, index])
+) as Record<RankType, number>
+
+export const SUIT_INDEX: Record<SuitType, number> = Object.fromEntries(
+  SUITS.map((suit, index) => [suit, index])
+) as Record<SuitType, number>

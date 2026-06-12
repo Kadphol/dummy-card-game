@@ -1,35 +1,109 @@
+import { SUIT, SUIT_SYMBOLS } from '@/constants/card'
+import { cardLabel } from '@/libs/deck'
 import { cn } from '@/libs/utils'
-import { CardType } from '@/types/card'
-import { SUIT, SUIT_SYMBOLS } from '@constants/card'
+import type { CardType } from '@/types/card'
 
 interface CardProps {
-  card: CardType
+  card?: CardType
   onClick?: () => void
   isSelected?: boolean
+  isDimmed?: boolean
+  isBack?: boolean
+  size?: 'hand' | 'discard' | 'meld' | 'mini'
+  owner?: 'human' | 'computer'
 }
 
-const Card = ({ card, onClick, isSelected = false }: CardProps) => {
-  const { suit, rank } = card
-  const { color, bgColor } =
-    suit === SUIT.HEARTS || suit === SUIT.DIAMONDS
-      ? { color: 'text-red-500', bgColor: 'bg-white' }
-      : { color: 'text-black', bgColor: 'bg-white' }
+const SIZE_CLASSES = {
+  hand: 'h-[7.7rem] w-[5.35rem] sm:h-[8.6rem] sm:w-[5.9rem]',
+  discard: 'h-[6.8rem] w-[4.65rem] sm:h-[7.5rem] sm:w-[5.15rem]',
+  meld: 'h-[5.8rem] w-16 sm:h-[6.45rem] sm:w-[4.45rem]',
+  mini: 'h-[4.4rem] w-12 sm:h-20 sm:w-14',
+} as const
+
+export const Card = ({
+  card,
+  onClick,
+  isSelected = false,
+  isDimmed = false,
+  isBack = false,
+  size = 'hand',
+  owner,
+}: CardProps) => {
+  const isRed = card?.suit === SUIT.HEARTS || card?.suit === SUIT.DIAMONDS
+
+  if (isBack || !card) {
+    if (onClick) {
+      return (
+        <button
+          type="button"
+          className={cn(
+            'card-back shrink-0 rounded-[0.55rem] border-2 border-amber-100/80 shadow-[0_5px_12px_rgba(0,0,0,0.3)]',
+            SIZE_CLASSES[size]
+          )}
+          aria-label="Face-down card"
+          onClick={onClick}
+        >
+          <span className="sr-only">Face-down card</span>
+        </button>
+      )
+    }
+
+    return (
+      <div
+        className={cn(
+          'card-back shrink-0 rounded-[0.55rem] border-2 border-amber-100/80 shadow-[0_5px_12px_rgba(0,0,0,0.3)]',
+          SIZE_CLASSES[size]
+        )}
+        aria-label="Face-down card"
+      >
+        <span className="sr-only">Face-down card</span>
+      </div>
+    )
+  }
+
+  const classes = cn(
+    'playing-card relative shrink-0 overflow-hidden rounded-[0.55rem] border text-left shadow-[0_5px_12px_rgba(0,0,0,0.28)] transition duration-150',
+    SIZE_CLASSES[size],
+    isRed ? 'text-[#b5232e]' : 'text-[#181613]',
+    onClick &&
+      'cursor-pointer hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300',
+    isSelected && '-translate-y-3 border-amber-300 ring-4 ring-amber-300/50',
+    isDimmed && 'opacity-55',
+    owner === 'human' && 'ring-2 ring-amber-300',
+    owner === 'computer' && 'ring-2 ring-rose-500'
+  )
+  const content = (
+    <>
+      <span className="absolute left-2 top-1.5 flex flex-col items-center font-serif text-[1.05rem] font-bold leading-none sm:text-xl">
+        {card.rank}
+        <span className="mt-0.5 text-sm sm:text-base">{SUIT_SYMBOLS[card.suit]}</span>
+      </span>
+      <span className="absolute inset-0 flex items-center justify-center font-serif text-[2.6rem] sm:text-5xl">
+        {SUIT_SYMBOLS[card.suit]}
+      </span>
+      <span className="absolute bottom-1.5 right-2 rotate-180 font-serif text-[1.05rem] font-bold leading-none sm:text-xl">
+        {card.rank}
+      </span>
+    </>
+  )
+
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        className={classes}
+        aria-label={cardLabel(card)}
+        aria-pressed={isSelected}
+        onClick={onClick}
+      >
+        {content}
+      </button>
+    )
+  }
 
   return (
-    <div
-      className={cn(
-        'flex h-24 w-16 cursor-pointer flex-col items-center justify-center rounded-lg border border-gray-300 bg-white p-2',
-        color,
-        bgColor,
-        {
-          'border border-yellow-400': isSelected,
-        }
-      )}
-      onClick={onClick}
-    >
-      <div className="w-full text-right">{rank}</div>
-      <div className="text-4xl">{SUIT_SYMBOLS[suit]}</div>
-      <div className="w-full rotate-180 transform text-right">{rank}</div>
+    <div className={classes} aria-label={cardLabel(card)}>
+      {content}
     </div>
   )
 }
