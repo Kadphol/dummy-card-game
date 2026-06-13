@@ -99,5 +99,10 @@ describe('Deck utils', () => {
       expect(isSpecialCard(card(SUIT.SPADES, RANK.QUEEN))).toBe(true)
       expect(isSpecialCard(card(SUIT.HEARTS, RANK.QUEEN))).toBe(false)
     })
+
+    it('scores the head card as 50 points', () => {
+      const head = card(SUIT.HEARTS, RANK.FIVE)
+      expect(calculateCardPoints(head, head.id)).toBe(50)
+    })
   })
 })

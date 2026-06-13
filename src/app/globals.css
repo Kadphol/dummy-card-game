@@ -144,6 +144,14 @@ button {
   margin-left: -1.6rem;
 }
 
+.side-card-stack > * + * {
+  margin-top: -3.25rem;
+}
+
+.opponent-active {
+  filter: drop-shadow(0 0 0.5rem rgb(52 211 153 / 35%));
+}
+
 .header-button {
   display: inline-flex;
   min-height: 2.5rem;
@@ -183,6 +191,14 @@ button {
 @media (max-width: 639px) {
   .card-row-overlap > * + * {
     margin-left: -1.85rem;
+  }
+
+  .side-card-stack > * + * {
+    margin-top: -3.55rem;
+  }
+
+  .opponent-card-stack > :nth-child(n + 5) {
+    display: none;
   }
 
   .action-button {

@@ -9,8 +9,9 @@ interface CardProps {
   isSelected?: boolean
   isDimmed?: boolean
   isBack?: boolean
+  isHead?: boolean
   size?: 'hand' | 'discard' | 'meld' | 'mini'
-  owner?: 'human' | 'computer'
+  owner?: 'human' | 'west' | 'north' | 'east'
 }
 
 const SIZE_CLASSES = {
@@ -26,6 +27,7 @@ export const Card = ({
   isSelected = false,
   isDimmed = false,
   isBack = false,
+  isHead = false,
   size = 'hand',
   owner,
 }: CardProps) => {
@@ -69,8 +71,11 @@ export const Card = ({
       'cursor-pointer hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300',
     isSelected && '-translate-y-3 border-amber-300 ring-4 ring-amber-300/50',
     isDimmed && 'opacity-55',
+    isHead && 'border-amber-300 ring-4 ring-amber-300/55',
     owner === 'human' && 'ring-2 ring-amber-300',
-    owner === 'computer' && 'ring-2 ring-rose-500'
+    owner === 'west' && 'ring-2 ring-sky-400',
+    owner === 'north' && 'ring-2 ring-rose-400',
+    owner === 'east' && 'ring-2 ring-violet-400'
   )
   const content = (
     <>
@@ -84,6 +89,11 @@ export const Card = ({
       <span className="absolute bottom-1.5 right-2 rotate-180 font-serif text-[1.05rem] font-bold leading-none sm:text-xl">
         {card.rank}
       </span>
+      {isHead && (
+        <span className="absolute right-1 top-1 rounded bg-amber-300 px-1 py-0.5 text-[0.52rem] font-bold tracking-wide text-emerald-950">
+          HEAD · 50
+        </span>
+      )}
     </>
   )
 
